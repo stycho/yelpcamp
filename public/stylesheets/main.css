@@ -1,3 +1,19 @@
 .card-img-top.small-cards {
     max-height: 140px !important;
 }
+
+.display-inline {
+    display: inline;
+}
+
+.bot-marg {
+    margin-bottom: 25px;
+}
+
+.figure-img {
+    margin-bottom: 0;
+}
+
+.card-body {
+    padding-bottom: 1.5rem;
+}

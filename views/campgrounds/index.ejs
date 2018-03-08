@@ -14,11 +14,11 @@
     <div class="row row-eq-height">
         <% campgrounds.forEach(campground => { %>
             <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="card">
+                <div class="card bot-marg">
                     <img src="<%= campground.image %>" class="figure-img card-img-top small-cards" alt="pic">
                     <div class="card-body text-center">
                         <h5 class="card-title"><%= campground.name %></h5>
-                        <p class="card-text"><a href="/campgrounds/<%= campground._id %>" class="btn btn-primary btn-sm">More Info</a></p>
+                        <p class="card-text"><a href="/campgrounds/<%= campground._id %>" class="btn btn-outline-primary btn-sm">More Info</a></p>
                     </div>
                 </div>
             </div>
