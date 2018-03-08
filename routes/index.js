@@ -1,7 +1,8 @@
 const express = require('express'),
       router = express.Router(),
       User = require('../models/user'),
-      passport = require('passport');
+      passport = require('passport'),
+      middleware = require('../middleware');
 
 // ROOT ROUTE
 router.get('/', (req, res) => {
@@ -10,7 +11,7 @@ router.get('/', (req, res) => {
 
 // SHOW REGISTER FORM
 router.get('/register', (req, res) => {
-    res.render('register', {message: 'Please sign up', currentUser: req.user});
+    res.render('register', {currentUser: req.user});
 });
 
 // HANDLE REGISTER LOGIC
@@ -19,10 +20,11 @@ router.post('/register', (req, res) => {
     
     User.register(newUser, req.body.password, (err, user) => {
         if (err) {
-            console.log(err);
-            return res.render('register', {message: err.message});
+            req.flash('error', err.message);
+            return res.redirect('register');
         } else {
             passport.authenticate('local')(req, res, () => {
+                req.flash('success', "Welcome to GoodCamp " + user.username);
                 res.redirect('/campgrounds')
             });
         }
@@ -45,17 +47,9 @@ router.post('/login', passport.authenticate('local',
 // LOGOUT ROUTE
 router.get('/logout', (req, res) => {
     req.logout();
+    req.flash('success', 'Logged out');
     res.redirect('/campgrounds');
 });
-
-// MIDDLEWARE
-function isLoggedIn(req, res, next) {
-    if(req.isAuthenticated()) {
-        return next();
-    } else {
-        res.redirect('/login');
-    }
-}
 
 // EXPORT
 module.exports = router;

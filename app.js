@@ -2,6 +2,7 @@ const express = require('express'),
       app = express(),
       bodyParser = require('body-parser'),
       mongoose = require('mongoose'),
+      flash = require('connect-flash'),
       passport = require('passport'),
       LocalStrategy = require('passport-local'),
       methodOverride = require('method-override'),
@@ -16,6 +17,7 @@ const commentRoutes = require('./routes/comments'),
       indexRoutes = require('./routes/index');
       
 mongoose.connect('mongodb://localhost/yelp_camp');
+app.use(flash());
 
 // SET
 app.use(bodyParser.urlencoded({extended: true}));
@@ -38,9 +40,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// PASSES USER AUTH TO ALL PAGES
+// PASS VARIABLES TO ALL PAGES
 app.use((req, res, next) => {
-    res.locals.currentUser = req.user;
+    res.locals.currentUser = req.user; // USER AUTH
+    res.locals.error = req.flash('error');
+    res.locals.success = req.flash('success');
     next();
 });
 

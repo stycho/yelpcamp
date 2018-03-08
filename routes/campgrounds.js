@@ -52,6 +52,9 @@ router.get('/:id', (req, res) => {
 // CAMPGROUND EDIT
 router.get('/:id/edit',middleware.checkCampOwnership, (req, res) => {
     Campground.findById(req.params.id, (err, foundCampground) => {
+        if (err) {
+            req.flash('error', 'Campground not found');
+        }
         res.render('campgrounds/edit', {campground: foundCampground});
     });
 });
@@ -77,34 +80,6 @@ router.delete('/:id',middleware.checkCampOwnership, (req, res) => {
         }
     });
 });
-
-
-// // MIDDLEWARE
-// function isLoggedIn(req, res, next) {
-//     if(req.isAuthenticated()) {
-//         return next();
-//     } else {
-//         res.redirect('/login');
-//     }
-// }
-
-// function checkCampOwnership(req, res, next) {
-//     if (req.isAuthenticated()) {
-//         Campground.findById(req.params.id, (err, foundCampground) => {
-//             if (err) {
-//                 res.redirect('back');
-//             } else {
-//                 if (foundCampground.author.id.equals(req.user._id)) {
-//                     next();
-//                 } else {
-//                     res.redirect('back');
-//                 }
-//             }
-//         });
-//     } else {
-//         res.redirect('back');
-//     }
-// }
 
 // EXPORT
 module.exports = router;
